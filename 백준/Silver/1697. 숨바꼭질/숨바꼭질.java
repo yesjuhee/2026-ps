@@ -5,8 +5,9 @@ class Main {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	int n, k;
-	Deque<Pair> q = new ArrayDeque<>();
+	Deque<Integer> q = new ArrayDeque<>();
 	boolean[] visited;
+	int[] dist = new int[100002];
 
 	public static void main(String[] args) throws IOException {
 		new Main().solution();
@@ -29,45 +30,23 @@ class Main {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
 		k = Integer.parseInt(st.nextToken());
-		int ceil = Math.max(n, k) * 2;
-		visited = new boolean[ceil];
+		Arrays.fill(dist, -1);
 
-		if (n == k) {
-			System.out.println(0);
-			return;
-		}
-
-		Pair start = new Pair(n, 0);
-		q.addLast(start);
-		visited[start.v] = true;
+		q.push(n);	
+		dist[n] = 0;
 
 		// BFS
-		while(!q.isEmpty()) {
-			Pair cur = q.removeFirst();
-			List<Integer> nexts = List.of(cur.v - 1, cur.v + 1, cur.v * 2);
-			for (int next: nexts) {
-				if (next < 0 || next >= ceil || visited[next] == true) {
+		while(dist[k] == -1) {
+			int cur = q.removeFirst();
+			for (int next: List.of(cur - 1, cur + 1, cur * 2)) {
+				if (next < 0 || next > 100000 || dist[next] != -1) {
 					continue;
 				}
-				if (next == k) {
-					System.out.println(cur.d + 1);
-					return;
-				}
-				q.addLast(new Pair(next, cur.d + 1));
-				visited[next] = true;
+				q.addLast(next);
+				dist[next] = dist[cur] + 1;
 			}
 		}
 
-	}
-
-	class Pair {
-
-		int v; // value
-		int d; // distance
-
-		public Pair(int v, int d) {
-			this.v = v;
-			this.d = d;
-		}
+		System.out.println(dist[k]);
 	}
 }
