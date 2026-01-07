@@ -21,15 +21,16 @@ class Main {
 	}
 
 	// a의 b승 구하기
-	public long func(long bb) {
-		if (bb == 1) {
+	public long func(long b) {
+		if (b == 1) {
 			return a % c;
 		}
-		long val = func(bb / 2);
-		if (bb % 2 == 0) {
-			return (val * val) % c;
+		long val = func(b / 2);
+		val = val * val % c;
+		if (b % 2 == 0) {
+			return val;
 		} else {
-			return (((val * val) % c) * a) % c;
+			return val * a % c;
 		}
 	}
 }
