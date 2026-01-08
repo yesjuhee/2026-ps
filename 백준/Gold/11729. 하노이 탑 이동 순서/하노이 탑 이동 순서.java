@@ -6,7 +6,6 @@ class Main {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	int n;
 	StringBuilder sb = new StringBuilder();
-	int count = 0;
 
 	public static void main(String[] args) throws IOException {
 		new Main().solution();
@@ -33,19 +32,20 @@ class Main {
 		*/
 
 		n = Integer.parseInt(br.readLine());
-		count = func(1, 3, n);
+
+		int count = (1 << n) - 1;
 		System.out.println(count);
+		func(1, 3, n);
 		System.out.println(sb);
 	}
 
-	int func(int a, int b, int n) {
+	void func(int a, int b, int n) {
 		if (n == 1) {
 			sb.append(a).append(" ").append(b).append("\n");
-			return 1;
+			return;
 		}
-		int count = func(a, 6 - a - b, n - 1);
+		func(a, 6 - a - b, n - 1);
 		sb.append(a).append(" ").append(b).append("\n");
 		func(6 - a - b, b, n - 1);
-		return 2 * count + 1;
 	}
 }
