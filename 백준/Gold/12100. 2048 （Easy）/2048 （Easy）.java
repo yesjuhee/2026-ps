@@ -118,38 +118,23 @@ class Main {
     public int[] zip(int[] arr1) {
         int[] arr2 = new int[n];
         int idx = 0;
-        
-        int start = 0;
-        while(start < n) {
-            if (arr1[start] != 0) break;
-            start++;
-        }
-        if (start == n) return arr1; // 빈 줄
-        int prev = arr1[start]; // 시작 값
-        
-        for (int i = start + 1; i < n; i++) {
-            int cur = arr1[i];
-            if (cur == 0) { // 빈칸 -> 무시
+        for (int i = 0; i < n; i++) {
+            if (arr1[i] == 0) continue;
+            // 옮길 값이 있다
+            if (arr2[idx] == 0) { // 새로운 값 추가, idx 이동하지 않음
+                arr2[idx] = arr1[i];
                 continue;
-            }
-            if (prev == -1) { // 새로운 값
-                prev = cur;
-                continue;
-            }
-            // prev가 존재할 때
-            if (prev == cur) { // 같은 값 -> 더하기
-                arr2[idx++] = prev * 2;
-                prev = -1;
-                continue;
-            } else { // 다른 값 -> 그냥 추가
-                arr2[idx++] = prev;
-                prev = cur;
+            } else {
+                // idx에 값이 있음
+                if (arr1[i] == arr2[idx]) { // 같은 값이면
+                    arr2[idx] = arr1[i] * 2;
+                    idx++;
+                } else {
+                    idx++;
+                    arr2[idx] = arr1[i];
+                }                 
             }
         }
-        if (prev != -1) {
-            arr2[idx] = prev;
-        }
-        
         return arr2;
     }
 }
