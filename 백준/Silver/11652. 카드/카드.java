@@ -41,16 +41,21 @@ class Main {
             long now = nums[i];
             if (now == prev) {
                 count++;
-                if (count > maxCount) { // 최대값 갱신
-                    maxNum = now;
-                    maxCount = count;
-                }
             } else {
                 // 다음 숫자
+                if (count > maxCount) { // 최대값 갱신
+                    maxNum = prev;
+                    maxCount = count;
+                }
                 count = 1;
                 prev = now;
             }
         }
+        if (count > maxCount) { // 최대값 갱신
+            maxNum = prev;
+            maxCount = count;
+        }
+     
 
         System.out.println(maxNum);
 	}
