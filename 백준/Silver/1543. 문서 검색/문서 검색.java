@@ -16,19 +16,11 @@ class Main {
         docs = br.readLine();
         target = br.readLine();
 
-        int i = 0;
-        int cnt = 0;
-        while (i + target.length() <= docs.length()) {
-            if (docs.substring(i, i + target.length()).equals(target)) {
-                // 같음
-                cnt++;
-                i += target.length();
-            } else {
-                // 다름
-                i++;
-            }
-        }
+        int s1 = docs.length();
+        docs = docs.replace(target, "");
+        int s2 = docs.length();
+        int diff = s1 - s2;
 
-        System.out.println(cnt);
+        System.out.println(diff / target.length());
 	}
 }
