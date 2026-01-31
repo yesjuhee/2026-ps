@@ -4,8 +4,9 @@ import java.util.*;
 class Main {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    Set<Integer> s = new HashSet<>();
     int m;
+    // 20개 비트 사용
+    int s = 0;
     
 	public static void main(String[] args) throws IOException {
         /*
@@ -15,38 +16,45 @@ class Main {
 	}
 
 	public void solution() throws IOException {
+        int ff = 0;
+        for (int i = 1; i <= 20; i++) {
+            int bit = 1 << i;
+            ff += bit;
+        }
+        
         m = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < m; i++) {
+            // System.out.println(Integer.toBinaryString(s));
             StringTokenizer st = new StringTokenizer(br.readLine());
             String cmd = st.nextToken();
             if (cmd.equals("add")) {
                 int a = Integer.parseInt(st.nextToken());
-                s.add(a);
+                int bit = 1 << a;
+                s |= bit;
             } else if (cmd.equals("remove")) {
                 int a = Integer.parseInt(st.nextToken());
-                s.remove(a);
+                // 어렵다
+                int bit = 1 << a;
+                int mask = ff ^ bit; // 11110111
+                s &= mask;
             } else if (cmd.equals("check")) {
                 int a = Integer.parseInt(st.nextToken());
-                if (s.contains(a)) {
+                int bit = 1 << a;
+                if ((s & bit) == bit) {
                     sb.append(1).append("\n");
                 } else {
                     sb.append(0).append("\n");
                 }
             } else if (cmd.equals("toggle")) {
                 int a = Integer.parseInt(st.nextToken());
-                if (s.contains(a)) {
-                    s.remove(a);
-                } else {
-                    s.add(a);
-                }                
+                int bit = 1 << a;
+                s ^= bit;
             } else if (cmd.equals("all")) {
-                for (int a = 1; a <= 20; a++) {
-                    s.add(a);
-                }
+                s = ff;
             } else {
-                // empty
-                s.clear();
+                // clear
+                s = 0;
             }
         }
         System.out.println(sb);
