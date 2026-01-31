@@ -16,12 +16,6 @@ class Main {
 	}
 
 	public void solution() throws IOException {
-        int ff = 0;
-        for (int i = 1; i <= 20; i++) {
-            int bit = 1 << i;
-            ff += bit;
-        }
-        
         m = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < m; i++) {
@@ -29,29 +23,23 @@ class Main {
             StringTokenizer st = new StringTokenizer(br.readLine());
             String cmd = st.nextToken();
             if (cmd.equals("add")) {
-                int a = Integer.parseInt(st.nextToken());
+                int a = Integer.parseInt(st.nextToken()) - 1;
                 int bit = 1 << a;
                 s |= bit;
             } else if (cmd.equals("remove")) {
-                int a = Integer.parseInt(st.nextToken());
-                // 어렵다
-                int bit = 1 << a;
-                int mask = ff ^ bit; // 11110111
+                int a = Integer.parseInt(st.nextToken()) - 1;
+                int mask = ~(1 << a);
                 s &= mask;
             } else if (cmd.equals("check")) {
-                int a = Integer.parseInt(st.nextToken());
-                int bit = 1 << a;
-                if ((s & bit) == bit) {
-                    sb.append(1).append("\n");
-                } else {
-                    sb.append(0).append("\n");
-                }
+                int a = Integer.parseInt(st.nextToken()) - 1;
+                int result = (s >> a) & 1;
+                sb.append(result).append("\n");
             } else if (cmd.equals("toggle")) {
-                int a = Integer.parseInt(st.nextToken());
+                int a = Integer.parseInt(st.nextToken()) - 1;
                 int bit = 1 << a;
                 s ^= bit;
             } else if (cmd.equals("all")) {
-                s = ff;
+                s = 0xfffff;
             } else {
                 // clear
                 s = 0;
