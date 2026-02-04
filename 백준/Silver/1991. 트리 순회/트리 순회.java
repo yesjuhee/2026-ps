@@ -6,6 +6,9 @@ class Main {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static char[] nodes;
     static int n;
+    static int[] leftChild; // i번 노드의 왼쪽 자식
+    static int[] rightChild;
+    
     static StringBuilder preorder = new StringBuilder();
     static StringBuilder inorder = new StringBuilder();
     static StringBuilder postorder = new StringBuilder();
@@ -30,63 +33,53 @@ class Main {
     void initTree() throws IOException {
         // n 입력
         n = Integer.parseInt(br.readLine());
-        nodes = new char[2 << n];
+        leftChild = new int[1 + n];
+        rightChild = new int[1 + n];
 
-        // 루트 초기화
-        nodes[1] = 'A';
-
-        // 노드 하나씩 입력 -> 현재 위치 찾기 -> 자식 추가
+        // 노드 하나씩 입력
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            char p = st.nextToken().charAt(0);
-            char leftChild = st.nextToken().charAt(0);
-            char rightChild = st.nextToken().charAt(0);
+            int p = charToInt(st.nextToken().charAt(0));
+            int lc = charToInt(st.nextToken().charAt(0));
+            int rc = charToInt(st.nextToken().charAt(0));
             
-            int pIndex = getIndexOf(p);
-            if (leftChild != '.') nodes[leftChild(pIndex)] = leftChild;
-            if (rightChild != '.') nodes[rightChild(pIndex)] = rightChild;
+            if (lc != charToInt('.')) leftChild[p] = lc;
+            if (rc != charToInt('.')) rightChild[p] = rc;
         }
     }
 
-    int getIndexOf(char c) {
-        for (int i = 1; i < 2 << n; i++) {
-            if (nodes[i] == c) return i;
-        }
-        return -1;
+    int charToInt(char c) {
+        return c - 'A' + 1;
     }
 
-    int leftChild(int idx) {
-        return 2 * idx;
+    char intToChar(int n) {
+        return (char) ('A' - 1 + n);
     }
 
-    int rightChild(int idx) {
-        return 2 * idx + 1;
-    }
-
-    void preorder(int idx) {
-        int leftChildIdx = leftChild(idx);
-        int rightChildIdx = rightChild(idx);
+    void preorder(int root) {
+        int lc = leftChild[root];
+        int rc = rightChild[root];
         
-        preorder.append(nodes[idx]);
-        if (nodes[leftChildIdx] != '\0') preorder(leftChildIdx);
-        if (nodes[rightChildIdx] != '\0') preorder(rightChildIdx);
+        preorder.append(intToChar(root));
+        if (lc != 0) preorder(lc);
+        if (rc != 0) preorder(rc);
     }
 
-    void inorder(int idx) {
-        int leftChildIdx = leftChild(idx);
-        int rightChildIdx = rightChild(idx);
+    void inorder(int root) {
+        int lc = leftChild[root];
+        int rc = rightChild[root];
         
-        if (nodes[leftChildIdx] != '\0') inorder(leftChildIdx);
-        inorder.append(nodes[idx]);        
-        if (nodes[rightChildIdx] != '\0') inorder(rightChildIdx);    
+        if (lc != 0) inorder(lc);
+        inorder.append(intToChar(root));
+        if (rc != 0) inorder(rc);   
     }
 
-    void postorder(int idx) {
-        int leftChildIdx = leftChild(idx);
-        int rightChildIdx = rightChild(idx);
+    void postorder(int root) {
+        int lc = leftChild[root];
+        int rc = rightChild[root];
         
-        if (nodes[leftChildIdx] != '\0') postorder(leftChildIdx);
-        if (nodes[rightChildIdx] != '\0') postorder(rightChildIdx);
-        postorder.append(nodes[idx]);
+        if (lc != 0) postorder(lc);
+        if (rc != 0) postorder(rc);
+        postorder.append(intToChar(root));        
     }
 }
