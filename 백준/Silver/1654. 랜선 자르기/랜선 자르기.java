@@ -32,11 +32,11 @@ class Main {
     // target을 구할 수 있는 가장 큰 길이 찾기
     // n 개 보다 많이 만들어도 된다
     long upperBound(int targetCount) {
-        long start = 1L;
+        long start = 1;
         long end = 1L << 31;
 
         while(start < end) {
-            long mid = (start + end) / 2L;
+            long mid = (start + end) / 2;
             long midCount = count(mid);
 
             /*
