@@ -17,11 +17,11 @@ class Main {
 
     public void solution() throws IOException {
         init();
+        Arrays.sort(arr);
         calculateTwoSum();
-
         Arrays.sort(two);
 
-        for (int i = 0; i < n; i++) {
+        for (int i = n-1; i >= 0; i--) {
             for (int j = 0; j < n; j++) {
                 long diff = Math.abs(arr[i] - arr[j]);
                 if (Arrays.binarySearch(two, diff) >= 0) {
