@@ -49,20 +49,6 @@ class Main {
     }
 
     int binarySearch(int target) {
-        int start = 0;
-        int end = sortedArr.size() - 1;
-
-        while(start <= end) {
-            int mid = (start + end) / 2;
-            if (sortedArr.get(mid) > target) {
-                end = mid - 1;
-            } else if (sortedArr.get(mid) < target) {
-                start = mid + 1;
-            } else {
-                return mid;
-            }
-        }
-        
-        return -1;
+        return Collections.binarySearch(sortedArr, target);
     }
 }
