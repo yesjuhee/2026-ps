@@ -5,7 +5,8 @@ class Main {
 
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     int n, m;
-    Set<String> prefixes = new HashSet<>();
+    int[][] trie;
+    int nextIdx = 1;
 
 	public static void main(String[] args) throws IOException {
         /*
@@ -24,20 +25,46 @@ class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
+        trie = new int[500*n + 5][26];
         // 접두사 초기화
         for (int i = 0; i < n; i++) {
             String str = br.readLine();
-            for (int s = 1; s <= str.length(); s++) {
-                prefixes.add(str.substring(0, s));
-            }
+            insert(str);
         }
         // 접두사 찾기
         int cnt = 0;
         for (int i = 0; i < m; i++) {
             String str = br.readLine();
-            if (prefixes.contains(str)) cnt++;
+            if (contains(str)) cnt++;
         }
 
         System.out.println(cnt);
+    }
+
+    void insert(String str) {
+        int curNode = 0; // root
+        for (int i = 0; i < str.length(); i++) {
+            int nextNode = charToInt(str.charAt(i));
+            if (trie[curNode][nextNode] == 0) {
+                // nextNode 추가
+                trie[curNode][nextNode] = nextIdx++;
+            } 
+            curNode = trie[curNode][nextNode];
+        }
+        // lastNode 표시할 필요 없음
+    }
+
+    boolean contains(String str) {
+        int curNode = 0;
+        for (int i = 0; i < str.length(); i++) {
+            int nextNode = charToInt(str.charAt(i));
+            if (trie[curNode][nextNode] == 0) return false;
+            curNode = trie[curNode][nextNode];
+        }
+        return true;
+    }
+
+    int charToInt(char c) {
+        return c - 'a';
     }
 }
