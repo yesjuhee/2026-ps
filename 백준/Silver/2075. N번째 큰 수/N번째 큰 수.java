@@ -22,21 +22,23 @@ class Main {
 	}
 
     public void solution() throws IOException {
-        PriorityQueue<Integer> pq = new PriorityQueue<>((e1, e2) -> e2 - e1);
         int n = Integer.parseInt(br.readLine());
+        List<Integer> arr = new ArrayList<>();
         
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
                 int num = Integer.parseInt(st.nextToken());
-                pq.add(num);
+                arr.add(num * -1);
             }
         }
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(arr);
 
         for (int i = 0; i < n - 1; i++) {
             pq.poll();
         }
 
-        System.out.println(pq.poll());
+        System.out.println(pq.poll() * -1);
     }
 }
